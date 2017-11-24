@@ -215,6 +215,48 @@ def return_simple_message(v):
 def sparktoint(v):
 	return int(v[6:])
 
+def return_random_num():
+	forar = [0,1,3,5,10]
+	return forar[np.random.randint(0, 5)]
+
+def Graph_(data):
+	Grph = data.groupby(['severity', 'committer_name']).size().unstack().fillna(0)
+	Grph = Grph.apply(average_severity)
+	Grph.plot(title='Severity for each author')
+	plt.show()
+
+
+	Grph = data.groupby(['year', 'severity']).size().unstack().fillna(0)
+	Grph.plot(title='severity per year')
+	plt.show()
+
+	Grph = data.groupby(['week', 'severity']).size().unstack().fillna(0)
+	Grph.plot(title='severity per week')
+	plt.show()
+
+	Grph = data.groupby(['weekday', 'severity']).size().unstack().fillna(0)
+	Grph.plot(title='severity per weekday')
+	plt.show()
+
+	Grph = data.groupby(['hours', 'severity']).size().unstack().fillna(0)
+	Grph.plot(title='severity per hours')
+	plt.show()
+
+	Grph = data.groupby(['issuestype', 'severity']).size().unstack().fillna(0)
+	Grph.plot(title='severity per issuestype')
+	plt.show()
+
+	Grph = data.groupby(['priority', 'severity']).size().unstack().fillna(0)
+	Grph.plot(title='severity per priority')
+	plt.show()
+
+
+	Grph = data.groupby(['time_offset', 'severity']).size().unstack().fillna(0)
+	Grph.plot(title='severity per time_offset')
+	plt.show()
+
+
+
 ###MAIN
 if os.path.exists("./data_frame.csv"):
 	data = pd.read_csv("./data_frame.csv")
@@ -278,42 +320,7 @@ else:
 
 	data = commits
 
-
-Grph = data.groupby(['severity', 'committer_name']).size().unstack().fillna(0)
-Grph = Grph.apply(average_severity)
-Grph.plot(title='Severity for each author')
-plt.show()
-
-
-Grph = data.groupby(['year', 'severity']).size().unstack().fillna(0)
-Grph.plot(title='severity per year')
-plt.show()
-
-Grph = data.groupby(['week', 'severity']).size().unstack().fillna(0)
-Grph.plot(title='severity per week')
-plt.show()
-
-Grph = data.groupby(['weekday', 'severity']).size().unstack().fillna(0)
-Grph.plot(title='severity per weekday')
-plt.show()
-
-Grph = data.groupby(['hours', 'severity']).size().unstack().fillna(0)
-Grph.plot(title='severity per hours')
-plt.show()
-
-Grph = data.groupby(['issuestype', 'severity']).size().unstack().fillna(0)
-Grph.plot(title='severity per issuestype')
-plt.show()
-
-Grph = data.groupby(['priority', 'severity']).size().unstack().fillna(0)
-Grph.plot(title='severity per priority')
-plt.show()
-
-
-Grph = data.groupby(['time_offset', 'severity']).size().unstack().fillna(0)
-Grph.plot(title='severity per time_offset')
-plt.show()
-
+Graph_(data)
 
 ###DATA for test
 target = pd.DataFrame({'severity':[]})
@@ -328,7 +335,7 @@ X_test = X_test.as_matrix()
 X_train = X_train.as_matrix()
 xx = [i for i in range(Y_test.shape[0])]
 
-
+##Classification
 model = RandomForestClassifier(n_estimators = 3, n_jobs=-1, max_features=10)
 model.fit(X_train, Y_train)
 result = model.predict(X_test)
@@ -432,7 +439,7 @@ while x < lenres:
 			x+=1
 			y+=1
 		if y == 5:
-			normres[n_r] = 3
+			normres[n_r] = return_random_num()
 			n_r += 1
 
 x = 0
