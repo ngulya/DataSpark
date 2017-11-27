@@ -15,7 +15,7 @@ from sklearn import metrics
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_squared_error, accuracy_score
 from keras.models import model_from_json
 from keras.datasets import mnist
 from keras.models import Sequential
@@ -40,6 +40,7 @@ def output_res(Y_test, xx, result, s):
 	plt.legend(loc=5)
 	plt.text(0,8,"%s"%s)
 	plt.text(0,7.5,"MSE = %s"%mean_squared_error(Y_test, result))
+	plt.text(0,7,"accuracy = %f"% accuracy_score(Y_test, result))
 	plt.show()
 	df_cm = pd.DataFrame(metrics.confusion_matrix(Y_test, result), index = [i for i in "54321"],columns = [i for i in "12345"])
 	plt.figure(figsize = (10,7))
@@ -222,7 +223,7 @@ def return_random_num():
 def Graph_(data):
 	Grph = data.groupby(['severity', 'committer_name']).size().unstack().fillna(0)
 	Grph = Grph.apply(average_severity)
-	Grph.plot(title='Severity for each author')
+	Grph.plot(title='Severity for each committer')
 	plt.show()
 
 
@@ -336,21 +337,22 @@ X_train = X_train.as_matrix()
 xx = [i for i in range(Y_test.shape[0])]
 
 ##Classification
-model = RandomForestClassifier(n_estimators = 3, n_jobs=-1, max_features=10)
+model = RandomForestClassifier(n_estimators = 4, n_jobs=-1, max_features=5)
 model.fit(X_train, Y_train)
 result = model.predict(X_test)
-output_res(Y_test, xx, result, "RandomForestClassifier()")
+output_res(Y_test, xx, result, "RandomForest")
 
-model = DecisionTreeClassifier()
+
+model = DecisionTreeClassifier(max_features=5)
 model.fit(X_train, Y_train)
 result = model.predict(X_test)
-output_res(Y_test, xx, result, "DecisionTreeClassifier()")
+output_res(Y_test, xx, result, "DecisionTree")
 
 
-model = KNeighborsClassifier(n_neighbors = 1,leaf_size = 1, n_jobs = -1, p =1)
+model = KNeighborsClassifier(n_neighbors = 1,leaf_size = 20, n_jobs = -1, p =1)#The best 1 neigh parameters
 model.fit(X_train, Y_train)
 result = model.predict(X_test)
-output_res(Y_test, xx, result, "KNeighborsClassifier()")
+output_res(Y_test, xx, result, "KNeighbors")
 
 
 ##NEURO
@@ -443,4 +445,4 @@ while x < lenres:
 			n_r += 1
 
 x = 0
-output_res(YN_test, xx, normres, "Neuro 10-5")
+output_res(YN_test, xx, normres, "Neuro")

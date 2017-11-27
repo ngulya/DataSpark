@@ -1,4 +1,5 @@
 First of all, in ML the main thing is data preparation. In this data, select qualitative features, and then build the model.I used 4 models: Random forest, Decision tree, K-Neighbors, Neuro network
 Random forest and Decision tree models that showed the best results, the worst result was in K-Neighbors, why did it happen?
-I think that K-Neighbors has too simple architecture, for ungrouped data.Random forest and Decision tree showed the same result because Random uses Decision tree, and for this model was provided with enough features (the defaulter parameters even lowered).
-And Neuro network - have 10 inputs and 5 outputs.
+I think that K-Neighbors has too simple architecture, for ungrouped data.Random forest and Decision tree showed the same result because Random uses Decision tree, and for this model was provided with enough features .The most optimal parameters for Random forest n_estimators = 4 max_features = 5 because we have only 10 features, but with these parameters we have 4*5 features
+on each tree will be combined different 5 features.
+And Neuro network - have 10 inputs and 5 outputs very good summarizes the data.
